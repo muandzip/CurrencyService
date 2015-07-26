@@ -34,7 +34,7 @@ class Fetcher(url: String, timeout: Duration) extends Actor{
     case ReceiveTimeout =>
       throw new TimeoutException
     case _: Status.Failure =>
-      throw new Exception
+      throw new Exception("JSON parsing error.")
   }
 }
 

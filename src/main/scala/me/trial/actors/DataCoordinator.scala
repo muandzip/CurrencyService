@@ -18,8 +18,8 @@ class DataCoordinator extends Actor with ActorLogging with Config{
   override val supervisorStrategy = OneForOneStrategy(maxNrOfRetries = retriesCount) {
     case _: TimeoutException =>
       log.error("TimeoutException handled"); Restart
-    case _: Exception =>
-      log.error("Unrecognized error"); Stop
+    case ex: Exception =>
+      log.error(ex.getMessage); Stop
   }
   val persistAgent = context.actorOf(Props[Writer])
 
@@ -27,7 +27,7 @@ class DataCoordinator extends Actor with ActorLogging with Config{
     case Tick  =>
       if (context.child("FetcherActor").isEmpty)
         context.actorOf(Fetcher.props(serviceUrl, timeoutMillis), "FetcherActor")
-    case msg @ Fetcher.Payload(_) =>
+    case msg: Fetcher.Payload =>
       log.info(s"Update received")
       persistAgent ! msg
   }

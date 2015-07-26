@@ -25,7 +25,7 @@ class CurrencyService extends Actor with HttpService {
       currencyISOCode =>
         get {
           respondWithMediaType(`application/json`)
-          _.complete {
+          complete {
             (readerActor ? GetRate(currencyISOCode)).mapTo[CurrencyRate].map(_.toJson.prettyPrint)
           }
         }
