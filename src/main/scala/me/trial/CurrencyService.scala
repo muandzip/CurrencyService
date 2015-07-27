@@ -10,6 +10,7 @@ import spray.routing.HttpService
 import spray.http.MediaTypes._
 import spray.json._
 import scala.concurrent.duration._
+import scala.language.postfixOps
 
 class CurrencyService extends Actor with HttpService {
   import me.trial.utils.MyJsonProtocol._
